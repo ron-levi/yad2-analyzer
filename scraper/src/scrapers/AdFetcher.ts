@@ -19,7 +19,7 @@ export class AdFetcher extends BaseScraper {
 
   private detectCategoryFromParams(searchParams?: SearchParams): AdCategory {
     // Check if search params contain real estate indicators
-    if (searchParams?.property || searchParams?.topArea || searchParams?.rooms) {
+    if (searchParams?.property || searchParams?.topArea || searchParams?.rooms || searchParams?.city || searchParams?.multiCity) {
       return 'real_estate';
     }
     // Default to vehicles

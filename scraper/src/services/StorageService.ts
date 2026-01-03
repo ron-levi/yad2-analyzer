@@ -8,7 +8,7 @@ export class StorageService {
 
   private getDate = () => new Date().toISOString().split('T')[0];
 
-  private generateDeduplicatedFileName(searchParams?: SearchParams): string {
+  public generateDeduplicatedFileName(searchParams?: SearchParams): string {
     const date = this.getDate();
     
     if (!searchParams || Object.keys(searchParams).length === 0) {
@@ -20,6 +20,11 @@ export class StorageService {
       .join('_');
 
     return `_deduplicated_${parts}_${date}.json`;
+  }
+
+  public getDeduplicatedFilePath(category: AdCategory, searchParams?: SearchParams): string {
+    const dedupeFileName = this.generateDeduplicatedFileName(searchParams);
+    return path.join(this.outputDir, category, this.getDate(), dedupeFileName);
   }
 
   getPath(adId: string, category: AdCategory, ext = 'html'): string {
