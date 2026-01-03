@@ -75,6 +75,11 @@ export class AdLister extends BaseScraper {
       }
     }
 
+    if (allAdIds.size === 0) {
+      console.log('⚠️ No ads found. Taking screenshot...');
+      await this.getPage().screenshot({ path: 'debug_screenshot.png', fullPage: true });
+    }
+
     // Cleanup handlers
     this.offResponse('api');
     this.offResponse('feed');

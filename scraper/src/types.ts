@@ -68,6 +68,7 @@ export interface ScrapingReport {
   startedAt: Date;
   completedAt: Date;
   concurrency: number;
+  outputFile?: string;
 }
 
 export interface RunOptions {

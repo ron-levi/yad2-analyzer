@@ -31,6 +31,8 @@ async function main() {
       concurrency: concurrencyArg ? parseInt(concurrencyArg, 10) : 1,
     });
     console.log('📊 Results:', JSON.stringify(result, null, 2));
+    // Print compact JSON on the last line for the Python service to consume
+    console.log(JSON.stringify(result));
   } catch (error) {
     console.error('❌ Error:', error);
     await orchestrator.shutdown();

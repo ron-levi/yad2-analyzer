@@ -1,0 +1,37 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: yad2_intelligence
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/yad2_intelligence
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SCRAPER_DIR=/app/scraper
+      - LOCATIONS_FILE=/app/scraper/src/data/locations.json
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/scraper/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+    command: uvicorn server.app.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  postgres_data:
